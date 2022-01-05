@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-assortment
+spec:
+  selector:
+    app: service-assortment
+  type: NodePort
+  ports:
+    - name: http
+      port: 8080
+      nodePort: 31000
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-assortment
+spec:
+  selector:
+    matchLabels:
+      app: service-assortment
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: service-assortment
+    spec:
+      containers:
+        - name: server
+          image: oleksiichernetskyi/service-assortment:latest
+          ports:
+            - name: http
+              containerPort: 8080
+
+---
